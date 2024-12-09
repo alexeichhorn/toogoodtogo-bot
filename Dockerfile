@@ -1,11 +1,12 @@
-FROM node:16-alpine
+FROM node:20-alpine
 WORKDIR /app
 # Copy and download dependencies
-COPY package.json yarn.lock ./
-RUN yarn --frozen-lockfile
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable
+RUN pnpm i
 
 # Copy sources into image
 COPY . .
 EXPOSE 3000
-RUN yarn build
-CMD yarn start
+RUN pnpm build
+CMD pnpm start
